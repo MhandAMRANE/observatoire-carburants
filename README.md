@@ -1,12 +1,12 @@
-# ⛽ Observatoire des prix des carburants en France
+#  Observatoire des prix des carburants en France
 
 Pipeline de données de bout en bout qui collecte chaque jour les prix des carburants
 de l'ensemble des stations-service françaises, les stocke dans un entrepôt de données
 et les restitue dans un tableau de bord Power BI.
 
-> 🚧 Projet en cours de développement — voir la [feuille de route](#-feuille-de-route).
+>  Projet en cours de développement — voir la [feuille de route](#-feuille-de-route).
 
-## 🎯 Objectifs
+##  Objectifs
 
 - Construire un pipeline **ELT automatisé et fiable** sur des données publiques réelles
 - Modéliser les données en **schéma en étoile** pour l'analyse
@@ -16,7 +16,7 @@ et les restitue dans un tableau de bord Power BI.
   - Combien coûte un plein sur autoroute par rapport à une route classique ?
   - Comment les prix évoluent-ils dans le temps ?
 
-## 🏗️ Architecture
+##  Architecture
 
 ```mermaid
 flowchart LR
@@ -28,7 +28,7 @@ flowchart LR
     F -.orchestre.-> C
 ```
 
-## 🛠️ Technologies
+##  Technologies
 
 | Étape | Outil |
 |---|---|
@@ -40,7 +40,7 @@ flowchart LR
 | Visualisation | Power BI |
 | Intégration continue | GitHub Actions |
 
-## 📁 Structure du projet
+##  Structure du projet
 
 ```
 observatoire-carburants/
@@ -57,7 +57,7 @@ observatoire-carburants/
 └── .env.example
 ```
 
-## 🚀 Lancer le projet
+##  Lancer le projet
 
 **Prérequis :** Docker et Python 3.11+
 
@@ -85,7 +85,7 @@ pytest -v
 La base est consultable sur **http://localhost:8081** (Adminer) :
 système *PostgreSQL*, serveur `postgres`, identifiants du fichier `.env`.
 
-## 🔍 Choix techniques
+## Choix techniques
 
 - **Format long** : le flux publie une colonne par carburant ; les données sont
   pivotées en une ligne par station et par carburant, plus simple à agréger et à filtrer.
@@ -97,7 +97,7 @@ système *PostgreSQL*, serveur `postgres`, identifiants du fichier `.env`.
   ce qui permet de rejouer le pipeline en cas de bug dans la transformation.
 - **Contrôles qualité** : exclusion des prix vides, nuls ou aberrants (< 0,50 € ou > 5 €).
 
-## 🗺️ Feuille de route
+##  Feuille de route
 
 - [x] Extraction Python et chargement dans PostgreSQL
 - [x] Tests unitaires et intégration continue
@@ -107,12 +107,12 @@ système *PostgreSQL*, serveur `postgres`, identifiants du fichier `.env`.
 - [ ] Analyse des résultats et principaux enseignements
 - [ ] Bonus : prévision des prix
 
-## 📊 Source des données
+## Source des données
 
 [Prix des carburants en France — Flux instantané v2](https://www.data.gouv.fr/fr/datasets/6407d088d4e23dc662022e2c),
 publié par le ministère de l'Économie sous Licence Ouverte. Données mises à jour toutes les 10 minutes.
 
-## 👤 Auteur
+##  Auteur
 
 **M'hand Amrane** — Étudiant en Master Data Engineering, Université de Corse
 [GitHub](https://github.com/MhandAMRANE)
