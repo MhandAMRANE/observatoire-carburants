@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: carburants_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-carburants}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-carburants}
+      POSTGRES_DB: ${POSTGRES_DB:-carburants}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-carburants}"]
+      interval: 5s
+      retries: 10
+
+  # Interface web pour explorer la base : http://localhost:8081
+  adminer:
+    image: adminer
+    container_name: carburants_adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Airflow sera ajouté à l'étape 3
+
+volumes:
+  pgdata:

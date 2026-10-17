@@ -1,0 +1,16 @@
+# Environnement
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Données brutes (trop volumineuses pour GitHub)
+data/raw/*
+!data/raw/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.pbix.bak
