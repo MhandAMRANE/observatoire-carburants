@@ -10,6 +10,7 @@ profile: observatoire_carburants
 model-paths: ["models"]
 macro-paths: ["macros"]
 seed-paths: ["seeds"]
+test-paths: ["tests"]
 models:
   models:
   observatoire_carburants:

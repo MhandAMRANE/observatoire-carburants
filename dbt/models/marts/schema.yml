@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  # ---------- Dimensions ----------
+  - name: dim_station
+    description: Dimension des stations-service (où ?)
+    columns:
+      - name: station_id
+        description: Identifiant officiel de la station
+        data_tests: [unique, not_null]
+      - name: zone
+        description: Corse ou Continent
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Corse', 'Continent']
+
+  - name: dim_carburant
+    description: Dimension des types de carburant (quoi ?)
+    columns:
+      - name: carburant
+        data_tests: [unique, not_null]
+
+  - name: dim_date
+    description: Calendrier, un jour par ligne (quand ?)
+    columns:
+      - name: date_jour
+        data_tests: [unique, not_null]
+
+  # ---------- Faits ----------
+  - name: fait_prix
+    description: Un prix par station, carburant et date de mise à jour
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_station')
+                field: station_id
+      - name: carburant
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_carburant')
+                field: carburant
+      - name: date_prix
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_jour
+      - name: prix
+        data_tests: [not_null]
