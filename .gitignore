@@ -1,16 +1,15 @@
-# Environnement
+# Environnement et secrets
 .env
 .venv/
-venv/
 __pycache__/
-*.pyc
 .pytest_cache/
 
-# Données brutes (trop volumineuses pour GitHub)
+# Données brutes (trop volumineuses)
 data/raw/*
 !data/raw/.gitkeep
 
-# IDE
-.vscode/
-.idea/
-*.pbix.bak
+# Fichiers générés par dbt
+dbt/target/
+dbt/logs/
+dbt/.user.yml
+logs/

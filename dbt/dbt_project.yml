@@ -1,0 +1,25 @@
+# Description du projet dbt
+name: observatoire_carburants
+version: "1.0.0"
+config-version: 2
+
+# Nom de la connexion à utiliser (définie dans profiles.yml)
+profile: observatoire_carburants
+
+# Dossier contenant les modèles SQL
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+models:
+  models:
+  observatoire_carburants:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: marts
+      +materialized: table
+
+seeds:
+  observatoire_carburants:
+    +schema: staging

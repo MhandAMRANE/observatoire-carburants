@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw              # nom de la source, utilisé dans source('raw', ...)
+    schema: raw            # schéma PostgreSQL où se trouvent les tables
+    description: Données chargées par le script extract/extract_prix.py
+    tables:
+      - name: stations
+        description: Une ligne par station-service
+      - name: prix_carburants
+        description: Un prix par station, carburant et date de mise à jour
