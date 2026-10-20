@@ -11,6 +11,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./sql/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./sql/airflow_db.sql:/docker-entrypoint-initdb.d/02_airflow_db.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-carburants}"]
       interval: 5s
@@ -31,6 +32,39 @@ services:
       postgres:
         condition: service_healthy
 
+  # Orchestrateur : http://localhost:8080
+  airflow:
+    build: .
+    image: observatoire-carburants-airflow
+    container_name: carburants_airflow
+    command: standalone
+    environment:
+      # Configuration d'Airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER:-carburants}:${POSTGRES_PASSWORD:-carburants}@postgres:5432/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: Europe/Paris
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+      # Connexion à la base des carburants (lue par le script Python et par dbt)
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: ${POSTGRES_USER:-carburants}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-carburants}
+      POSTGRES_DB: ${POSTGRES_DB:-carburants}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      # Le code du pipeline, partagé avec le conteneur
+      - ./extract:/opt/projet/extract
+      - ./dbt:/opt/projet/dbt
+      - ./data:/opt/projet/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+# Volumes nommés : stockage géré par Docker (les données survivent aux redémarrages)
 volumes:
   pgdata:
   pgadmin_data:
